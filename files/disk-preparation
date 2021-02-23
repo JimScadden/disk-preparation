@@ -1,0 +1,12 @@
+#!/bin/sh
+# Copyright (c) 2021, Magnus Sandberg
+# BSD 2-Clause "Simplified" License
+
+MYTAG="my-stuff"
+MYNAME="disk-preparation"
+logger -t "$MYTAG" "${MYNAME} started."
+
+logger -t "$MYTAG" "This is just a placeholder script."
+logger -t "$MYTAG" "Replace with your real '$MYNAME' script/program."
+
+exit 0
