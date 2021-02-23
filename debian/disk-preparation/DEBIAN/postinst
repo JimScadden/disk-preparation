@@ -1,0 +1,31 @@
+#!/bin/sh
+
+MYTAG="my-disk-prep"
+SCRIPT="disk-preparation"
+DLPATH="/tmp"
+
+DLURL=$( sed -n 's#.*url=\([^ ]\+/\).*#\1#p' /proc/cmdline )
+logger -t "$MYTAG" "DLURL extracted from /proc/cmdline: $DLURL"
+DLMETHOD=$( echo $DLURL | cut -d':' -f1 | tr 'a-z' 'A-Z' )
+logger -t "$MYTAG" "DLMETHOD extracted from \$DLURL: $DLMETHOD"
+if [ "x$DLMETHOD" = "xTFTP" ] ; then
+    PARTS=$( echo $DLURL | sed -n 's#.*//\([^/]\+\)/\(.*\)$#\1:\2#p' )
+    DLHOST=$( echo $PARTS | cut -d':' -f1 )
+    logger -t "$MYTAG" "TFTP server: $DLHOST"
+    DLURL=$( echo $PARTS | cut -d':' -f2 )
+    logger -t "$MYTAG" "Server path: $DLURL"
+    logger -t "$MYTAG" "Downloading $SCRIPT using tftp command."
+    tftp -l $DLPATH/$SCRIPT -g $DLHOST -r $DLURL/$SCRIPT || exit $?
+else
+    logger -t "$MYTAG" "Downloading $SCRIPT using wget command."
+    wget -P $DLPATH/ $DLURL/$SCRIPT || exit $?
+fi
+logger -t "$MYTAG" "Starting $SCRIPT"
+chmod +x $DLPATH/$SCRIPT && $DLPATH/$SCRIPT
+RC=$?
+if [ $RC -eq 0 ]; then
+    logger -t "$MYTAG" "$SCRIPT finished OK."
+else
+    logger -t "$MYTAG" "Disk preparation failed."
+    exit $RC
+fi

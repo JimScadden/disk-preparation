@@ -1,0 +1,18 @@
+disk-preparation (2021-02-23) unstable; urgency=medium
+
+  * Forked repo
+
+ -- Magnus Sandberg <mem@datakon.se>  Tue, 23 Feb 2021 22:25:32 +0100
+
+remote-script-partitioner (2013-10-21) unstable; urgency=medium
+
+  * initial version
+  * add README
+  * fix variable typo: HOME_SiZE
+  * document preseed/early_command usage
+  * link to examples in bfritz/debian-preseed project
+  * tiny README improvements
+  * add warning about hard-coded LUKS passphrase
+
+ -- Brad Fritz <brad@fewerhassles.com>  Mon Oct 21 14:34:45 2013 -0400
+

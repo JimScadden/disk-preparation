@@ -1,0 +1,13 @@
+Package: disk-preparation
+Package-Type: udeb
+Version: 1.0
+License: BSD-2-clause
+Vendor: none
+Architecture: all
+Maintainer: <disk-prep@datakon.se>
+Standards-Version: 3.9.1
+Section: debian-installer
+Priority: optional
+Homepage: https://github.com/mem-/disk-preparation
+Installer-Menu-Item: 4100
+Description: Download and run disk preparation script(s)
