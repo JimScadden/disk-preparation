@@ -1,10 +1,28 @@
-disk-preparation (2021-02-23) unstable; urgency=medium
+disk-preparation (1.0) unstable; urgency=low
+
+  * LICENSE: Added myself
+  * README.md: First update after fork
+  * Makefile: removed as no Makefile is needed
+  * remote-script-partitioner.templates: removed as not in use
+  * control, postinst.sh: files moved moved to debian/disk-preparation/DEBIAN/
+  * debian/disk-preparation/DEBIAN/control: updated to match my own repo
+  * debian/control: added as soft-link to only have one file to maintain
+  * debian/compat, debian/changelog: new files
+  * postinst: new version with support for both TFTP and HTTP(S)
+  * files/disk-preparation, files/early-wrapper.sh: files added
+  * README.md: Added early-wrapper.sh example, etc
+  * postinst, disk-preparation, early-wrapper.sh: added copyright and license lines
+  * README.md: updated
+
+ -- Magnus Sandberg <mem@datakon.se>  Thu, 25 Feb 2021 17:35:38 +0100
+
+disk-preparation (2021-02-23) unstable; urgency=low
 
   * Forked repo
 
- -- Magnus Sandberg <mem@datakon.se>  Tue, 23 Feb 2021 22:25:32 +0100
+ -- Magnus Sandberg <mem@datakon.se>  Tue, 23 Feb 2021 21:52:28 +0100
 
-remote-script-partitioner (2013-10-21) unstable; urgency=medium
+remote-script-partitioner (2013-10-21) unstable; urgency=low
 
   * initial version
   * add README

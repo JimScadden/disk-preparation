@@ -1,37 +1,79 @@
 # Disk Preparation
 
 Partition Debian disks with PXE and shell script instead of complex
-preseed templates.
+preseed partman templates.
 
 Advanced partitioning of Debian boxes with preseed templates can be a
-challange. `disk-preparation` makes it easy to bypass or extend the built-in
-templates and write a shell script to prepare or partition your disks.
+challange. `disk-preparation` makes it easy to bypass, simplify
+or extend the built-in templates by writing shell script(s) to prepare
+and partition your disks. It is possible to completly disable
+`partman` in the Debian installer.
 
-It is possible to disable `partman` in the Debian installer, downloads
-your `preparation` script via TFTP or HTTP(S) and execute it.
+This package is like a three stage rocket:
+1. The preseed's `early_command` is used to download an `udeb` package and add it to the Installer system.
+2. The udeb's `postinst` script will be run between `Detect disks` and `Partition disks` (partman).
+3. The `postinst` will download a script or program called `disk-preparation` and run it.
 
-### Building
+The download supports both TFTP and HTTP(S).
 
-Packages are built with `debhelper`'s `dh_builddeb`.
+Both the `udeb` package and the `disk-preparation` should be placed at
+the same location as the preseed file. Both the preseed examples below
+and the `postinst` script will extract the preseed location from the
+boot command line and use the same location.
+
+## Building
+
+Packages are built with debhelper's `dh_builddeb` command.
+
+### Prerequisites
+
+To learn about the `debconf` system (not needed to build the udeb package):
+```bash
+apt-get install debconf-doc
+```
+
+To build `udeb` using `dh_builddeb`
+```bash
+apt-get install --no-install-recommends debhelper build-essential
+```
+
+To update `debian/changelog` from the git log:
+```bash
+apt-get install --no-install-recommends git-buildpackage libdistro-info-perl
+```
+
+### Update changelog
+
+The following command will extract commit messages from the git log and put them
+in a changelog entry. `--full` includes all lines from commit messages, not just
+the first line. `--spawn-editor=always` allows for editing of the changelog
+before it is saved to debian/changelog.
+
+Note that the version string at the top line of the changelog will be the version
+of the package reglardless of settings in the `debian/control` file.
+
+```bash
+$ gbp dch --git-author --urgency=low --ignore-branch --full --spawn-editor=always --release --since=<git-hash>
+```
+
+### Build the package
 
 ```bash
 $ dh_builddeb
 ```
 
-### Boot information during install
+Note that the newly built package will be placed in the parent directory (../).
 
-Switch to a shell terminal during installation, e.g.: `CTRL-F2`.
+## Boot information during install
+
+To find out the download path extracted from the boot command,
+switch to a shell terminal during installation, e.g.: `CTRL-F2`.
 
 ```bash
 $ sed -n 's#.*url=\([^ ]\+/\).*#\1#p' /proc/cmdline
 ```
 
-### Configuration
-
-The `udeb` downloader extracts the `preseed` file location from the
-boot command line.  It downloads and executes a script named
-`disk-preparation` from the same location as the `preseed` file.
-
+## Preseed configuration
 
 The disk-preparation `udeb` package can be downloaded and added from
 `preseed/early_command`, e.g.:
@@ -61,9 +103,9 @@ d-i preseed/early_command string                                          \
     logger -t "$MYTAG" "End of early_command, continuing the installation."
 ```
 
-Or use the `early-wrapper.sh` script from preseed to be able to change
+Or use the `early-wrapper.sh` script from the preseed to be able to change
 debconf priority, add the `udeb` to the Installer system, run additional
-scripts as soon as possible:
+scripts as soon as preseed file has been loaded:
 
 ```bash
 d-i preseed/early_command string                                           \
@@ -90,7 +132,7 @@ d-i preseed/early_command string                                           \
     logger -t "$MYTAG" "End of early_command, continuing the installation."
 
 #
-# My own d-i varaibles used by early-wrapper.sh:
+# My own "d-i" varaibles used by early-wrapper.sh:
 # The variable $ MYTAG is set to "my-stuff" in most of my scripts and will be
 # used for logger messages and for my own configuration variables in debconf.
 #
@@ -98,7 +140,7 @@ d-i preseed/early_command string                                           \
 # To have automated install, "priority=high" is enough after network is
 # configured.
 # To boot with DHCP and avoid network questions before the preseed file is
-# loaded, the boot commandline must have "priority=citical".
+# loaded, the boot commandline must have "priority=critical".
 # After the inital network config we can change to our preferred priority.
 # With "medium" or "low" we will see the installer menus even if options are
 # set by the preseed file. Can be used for debugging or updates of preseed file.
@@ -106,7 +148,7 @@ d-i my-stuff/early-wrapper/newprio string high
 #
 # A list of udeb(s) to unpack (add to the installer system).
 # Udebs will only be unpacked, not fully installed until relevant stage in
-# the installer system depening on 'Installer-Menu-Item' in control file.
+# the installer system depening on 'Installer-Menu-Item' in udeb's control file.
 d-i my-stuff/early-wrapper/udeb-unpack string disk-preparation_1.0_all.udeb
 #
 # Additional scripts to run from early-wrapper.sh:
