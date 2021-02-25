@@ -62,7 +62,7 @@ $ gbp dch --git-author --urgency=low --ignore-branch --full --spawn-editor=alway
 $ dh_builddeb
 ```
 
-Note that the newly biuld package will be placed in the parent directory (../).
+Note that the newly built package will be placed in the parent directory (../).
 
 ## Boot information during install
 
@@ -103,9 +103,9 @@ d-i preseed/early_command string                                          \
     logger -t "$MYTAG" "End of early_command, continuing the installation."
 ```
 
-Or use the `early-wrapper.sh` script from preseed to be able to change
+Or use the `early-wrapper.sh` script from the preseed to be able to change
 debconf priority, add the `udeb` to the Installer system, run additional
-scripts as soon as possible:
+scripts as soon as preseed file has been loaded:
 
 ```bash
 d-i preseed/early_command string                                           \
@@ -132,7 +132,7 @@ d-i preseed/early_command string                                           \
     logger -t "$MYTAG" "End of early_command, continuing the installation."
 
 #
-# My own d-i varaibles used by early-wrapper.sh:
+# My own "d-i" varaibles used by early-wrapper.sh:
 # The variable $ MYTAG is set to "my-stuff" in most of my scripts and will be
 # used for logger messages and for my own configuration variables in debconf.
 #
@@ -140,7 +140,7 @@ d-i preseed/early_command string                                           \
 # To have automated install, "priority=high" is enough after network is
 # configured.
 # To boot with DHCP and avoid network questions before the preseed file is
-# loaded, the boot commandline must have "priority=citical".
+# loaded, the boot commandline must have "priority=critical".
 # After the inital network config we can change to our preferred priority.
 # With "medium" or "low" we will see the installer menus even if options are
 # set by the preseed file. Can be used for debugging or updates of preseed file.
@@ -148,7 +148,7 @@ d-i my-stuff/early-wrapper/newprio string high
 #
 # A list of udeb(s) to unpack (add to the installer system).
 # Udebs will only be unpacked, not fully installed until relevant stage in
-# the installer system depening on 'Installer-Menu-Item' in control file.
+# the installer system depening on 'Installer-Menu-Item' in udeb's control file.
 d-i my-stuff/early-wrapper/udeb-unpack string disk-preparation_1.0_all.udeb
 #
 # Additional scripts to run from early-wrapper.sh:
