@@ -1,12 +1,12 @@
 # Disk Preparation
 
-Partition Debian disks with PXE and shell script instead of complex
+Partition Debian disks with PXE and shell script(s) instead of complex
 preseed partman templates.
 
 Advanced partitioning of Debian boxes with preseed templates can be a
 challange. `disk-preparation` makes it easy to bypass, simplify
 or extend the built-in templates by writing shell script(s) to prepare
-and partition your disks. It is possible to completly disable
+and partition your disks. It is possible to completely disable
 `partman` in the Debian installer.
 
 This package is like a three stage rocket:
@@ -50,7 +50,7 @@ the first line. `--spawn-editor=always` allows for editing of the changelog
 before it is saved to debian/changelog.
 
 Note that the version string at the top line of the changelog will be the version
-of the package reglardless of settings in the `debian/control` file.
+of the package file reglardless of settings in the `debian/control` file.
 
 ```bash
 $ gbp dch --git-author --urgency=low --ignore-branch --full --spawn-editor=always --release --since=<git-hash>

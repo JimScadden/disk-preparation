@@ -9,9 +9,9 @@ Here you find both needed files and examples to be inspired by.
 A file named `disk-preparation` should be palaced together with the preseed file.
 The `postinst` script in `disk-preparation_1.0_all.udeb` will download the
 `disk-preparation` script/program and run it. The file here is just a placeholder file
-That doesn't do anything except writeing some log messages to `/var/log/syslog`.
+That doesn't do anything except writing some log messages to `/var/log/syslog`.
 
-An alternative is `disk-prep-wrapper.sh found below.
+An alternative is `disk-prep-wrapper.sh` found below.
 
 ### disk-preparation_1.0_all.udeb
 
