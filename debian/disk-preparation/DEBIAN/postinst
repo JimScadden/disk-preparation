@@ -6,8 +6,16 @@ MYTAG="my-disk-prep"
 SCRIPT="disk-preparation"
 DLPATH="/tmp"
 
-DLURL=$( sed -n 's#.*url=\([^ ]\+/\).*#\1#p' /proc/cmdline )
-logger -t "$MYTAG" "DLURL extracted from /proc/cmdline: $DLURL"
+. /usr/share/debconf/confmodule
+db_get $MYTAG/url
+RC=$?
+if [ $RC -eq 0 ]; then
+    DLURL="$RET"
+    logger -t "$MYTAG" "DLURL from preseed $MYTAG/url: $DLURL"
+else
+    DLURL=$( sed -n 's#.*url=\([^ ]\+/\).*#\1#p' /proc/cmdline )
+    logger -t "$MYTAG" "DLURL extracted from /proc/cmdline: $DLURL"
+fi
 DLMETHOD=$( echo $DLURL | cut -d':' -f1 | tr 'a-z' 'A-Z' )
 logger -t "$MYTAG" "DLMETHOD extracted from \$DLURL: $DLMETHOD"
 if [ "x$DLMETHOD" = "xTFTP" ] ; then

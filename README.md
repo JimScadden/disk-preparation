@@ -73,6 +73,20 @@ switch to a shell terminal during installation, e.g.: `CTRL-F2`.
 $ sed -n 's#.*url=\([^ ]\+/\).*#\1#p' /proc/cmdline
 ```
 
+## Specifying script source location
+
+This can be specified on the kernel command line:
+
+``bash
+url=http://some.host/some.file``
+```
+
+Or alternatively you can use the preseed variable my-disk-prep/url
+
+```bash
+d-i my-disk-prep/url string http://some.host/some.file
+```
+
 ## Preseed configuration
 
 The disk-preparation `udeb` package can be downloaded and added from
