@@ -77,8 +77,8 @@ $ sed -n 's#.*url=\([^ ]\+/\).*#\1#p' /proc/cmdline
 
 This can be specified on the kernel command line:
 
-``bash
-url=http://some.host/some.file``
+```bash
+url=http://some.host/some.file
 ```
 
 Or alternatively you can use the preseed variable my-disk-prep/url
