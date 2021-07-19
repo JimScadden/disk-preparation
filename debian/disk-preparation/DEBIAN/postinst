@@ -26,6 +26,14 @@ if [ "x$DLMETHOD" = "xTFTP" ] ; then
     logger -t "$MYTAG" "Server path: $DLURL"
     logger -t "$MYTAG" "Downloading $SCRIPT using tftp command."
     tftp -l $DLPATH/$SCRIPT -g $DLHOST -r $DLURL/$SCRIPT || exit $?
+elif  [ "x$DLMETHOD" = "xPRESEED" ]; then
+    logger -t "$MYTAG" "Extracting $SCRIPT from preseed data."
+    # download the preseed file as the copy on disk has the comments stripped out
+    db_get preseed/url
+    PRESEED_URL="$RET"
+    preseed_fetch "$PRESEED_URL" /tmp/preseed_raw
+    cat /tmp/preseed_raw | sed -e '1,/### disk-preparation script begin/d' -e '/### disk-preparation script end/,$d' -e 's/^#\s\?//' > $DLPATH/$SCRIPT
+    rm /tmp/preseed_raw
 else
     logger -t "$MYTAG" "Downloading $SCRIPT using wget command."
     wget -P $DLPATH/ $DLURL/$SCRIPT || exit $?
