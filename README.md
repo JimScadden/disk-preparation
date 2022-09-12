@@ -169,6 +169,27 @@ d-i my-stuff/early-wrapper/udeb-unpack string disk-preparation_1.0_all.udeb
 #d-i my-stuff/early-wrapper/earlyscripts string early-extra-1.sh early-extra-2.sh
 ```
 
+### Providing disk preparation script inline in the preseed file
+
+To provide the partitioning script inline in the preseed file, use the special
+URL `preseed:`, then have the following in the preseed file:
+
+```bash
+### disk-preparation script begin
+# #!/bin/sh
+#
+# # specify commands here, with a leading '# ' to prevent preseed from trying
+# # to parse the lines
+#
+# # partition disks
+# log-output -t $TAG partitioning disks
+# anna-install parted-udeb
+#
+# # etc. etc.
+#
+### disk-preparation script end
+```
+
 ### Disk Preparation Script Example
 
 For the moment I recommend a look at the original repo:<br/>
